@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ANALYTiC</title>
+
+	<!-- jQuery and jQuery UI -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<!-- Bootstrap CSS & JS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<!-- Mapbox (Leaflet-based) -->
+	<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+	<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+
+	<!-- Google Charts -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	<!-- Plotly -->
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@latest/plotly.min.js"></script>
+
+	<!-- D3.js -->
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+
+	<!-- Google Fonts (Material Icons) -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="./css">
+	<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+
+
+</head>
+
+
+
+<body>
+
+	<!-- Starts top navbar -->
+	<nav id="top-navbar" class="navbar navbar-default" style="height: 75px;">
+		<div class="container-fluid">
+
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#"
+					style="background: url('images/analytic.png') no-repeat; background-size: 100px 50px; width: 130px; margin-left: 10px;"></a>
+			</div>
+
+			<div class="navbar-right">
+				<button class="btn btn-custom mt-3" onclick="window.location.href='/index'" title="Restart">
+					<i class="fas fa-redo"></i> <!-- Restart icon -->
+				</button>
+				<button class="btn btn-custom mt-3" onclick="window.location.href='/'" title="Home">
+					<i class="fas fa-home"></i> <!-- Home icon -->
+				</button>
+			</div>
+
+			<div id="customModal" class="modal">
+				<div class="modal-content">
+					<h3><strong>Add Class Labels</strong></h3>
+					<p id="modalMessage"></p>
+					<div class="modal-buttons">
+						<button id="modalOk">Yes</button>
+						<button id="modalCancel">No</button>
+					</div>
+				</div>
+			</div>
+
+		</div><!-- /.container-fluid -->
+	</nav><!-- Ends top navbar -->
+
+	<!-- Starts middle navbar -->
+	<div class="panel panel-primary">
+		<div id='middle-nav' class="row">
+			<div id="middle-left-nav" class="col-md-8">
+				<div class="row">
+					<div class="map-from">
+						<nav id="loading" class="loader"></nav>
+						<nav id="map"></nav>
+					</div>
+				</div>
+
+				<div class="row">
+
+					<div class="col-md-8">
+						<div class="panel3 summary-panel">
+							<div class="panel-header">
+								<span class="panel-title">Next Step</span>
+								<span class="icon glyphicon glyphicon-info-sign"
+									title="This panel shows information regarding the experiment that is being executed."></span>
+							</div>
+							<div class="panel-body">
+								<div id="snackbar"> </div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="col-md-4">
+						<div class="panel3 summary-panel">
+							<div class="panel-header">
+								<span class="panel-title">Summary</span>
+								<span class="icon glyphicon glyphicon-info-sign"
+									title="This panel shows information regarding the experiment that is being executed."></span>
+							</div>
+
+							<div class="panel-body">
+								<div class="inline" style="display: flex; justify-content: space-between;">
+									<span class="label-title">Total labeled:</span>
+									<span id="total-labeled" class="label-value"></span> <!-- Placeholder Value -->
+								</div>
+								<div class="inline" style="display: flex; justify-content: space-between;">
+									<span class="label-title">Remaining from budget:</span>
+									<span id="remaining-budget" class="label-value"></span> <!-- Placeholder Value -->
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row">
+					<!-- Manage Dataset Panel -->
+					<div class="col-md-4">
+						<div id='db-info' class='panel2'>
+							<div class="panel-header">
+								<span class="panel-title">Manage Dataset</span>
+								<span class="icon glyphicon glyphicon-info-sign"
+									title="This panel manages trajectory data for map layers, allowing users to select a database, navigate through trajectories and label them"></span>
+							</div>
+
+							<div class="panel-body">
+
+								<dl class="inline" style="display: flex; justify-content: space-between;">
+									<div class="inline">
+										<dl for="DB-dropdown-btn" style="margin-bottom: 0;">Database: &nbsp;
+											<ul class="nav navbar-nav" style="margin-bottom: 0;">
+												<li id="databases-dropdown" class="dropdown">
+													<a id="DB-dropdown-btn" href="#" class="dropdown-toggle"
+														data-toggle="dropdown" role="button" aria-haspopup="true"
+														aria-expanded="false">Database<span class="caret"></span></a>
+													<ul class="dropdown-menu" id="database-list">
+														<li><a id='fishing' href="#"
+																onclick="updateDropdownDB('Fishing Vessels')">Fishing
+																Vessels</a></li>
+														<li><a id='animals' href="#"
+																onclick="updateDropdownDB('Animals')">Animals</a>
+														</li>
+														<li><a id='hurricanes' href="#"
+																onclick="updateDropdownDB('Hurricanes')">Hurricanes</a>
+														</li>
+
+														<li><a id='geolife' href="#"
+																onclick="updateDropdownDB('Geolife')">Geolife</a>
+														</li>
+													</ul>
+												</li>
+											</ul>
+
+
+										</dl>
+									</div>
+									<div class="inline">
+										Total Trajectories:&nbsp;
+										<strong id="trajectory-count"> </strong>
+									</div>
+								</dl>
+
+								<dl>
+									<div class="Trajectory_Features_Form">
+										Trajectory Features: &nbsp;
+										<span id="used-features-list-trajectory" style="color: #406692"></span>
+									</div>
+								</dl>
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Manage Layers Panel -->
+					<div class='col-md-4'>
+						<div id='labels-info' class='panel2'>
+							<div class="panel-header">
+								<span class="panel-title">Manage Layers</span>
+								<span class="icon glyphicon glyphicon-info-sign"
+									title="This panel manages information and actions related to the map's layers. Here you can add new layer, choose the color, set show/hide for layers."></span>
+							</div>
+							<div class="panel-body" style="margin-bottom: 30px;">
+
+								<dl for="label-txt">Name:&nbsp;
+									<span class='flex-span'>
+										<input type='text' id='label-txt' value=''>
+									</span>
+									<button id='add-new-label' class='btn btn-danger button-size' disabled>Add</button>
+								</dl>
+
+								<dl for="unlabeled-color">Unlabeled:&nbsp;
+									<input id='unlabeled-color' type="color" name="favcolor" value="#FF0000">
+								</dl>
+
+								<nav id='labels-colors'></nav>
+							</div>
+						</div>
+					</div>
+
+					<!-- Active Learning Panel -->
+					<div class="col-md-4">
+						<div id='al-info' class='panel2'>
+							<div class="panel-header">
+								<span class="panel-title">Active Learning</span>
+								<span class="icon glyphicon glyphicon-info-sign"
+									title="This panel displays all options selected to execute an active learning experiment, and change the bags containing results from a simulation."></span>
+							</div>
+
+							<div class="panel-body2">
+								<!-- AL Strategy Dropdown -->
+								<dl for="al-dropdown-btn" style="margin-bottom: 0;">Active Learning
+									Strategies:&nbsp;
+									<ul class="nav navbar-nav" style="margin-bottom: 0;">
+										<li id="al-dropdown" class="dropdown">
+											<a id="al-dropdown-btn" href="#" class="dropdown-toggle"
+												data-toggle="dropdown" role="button" aria-haspopup="true"
+												aria-expanded="false">Active Learning
+												Strategies <span class="caret"></span></a>
+											<ul class="dropdown-menu">
+												<li><a id='rnd' href="#"
+														onclick="updateDropdown('al-dropdown-btn', 'Random Sampling')">Random
+														Sampling</a></li>
+												<li><a id='unc' href="#"
+														onclick="updateDropdown('al-dropdown-btn', 'Uncertain Sampling')">Uncertain
+														Sampling</a></li>
+												<li><a id='qbc' href="#"
+														onclick="updateDropdown('al-dropdown-btn', 'Query-by-committee')">Query-by-committee</a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</dl>
+								<!-- ends AL strategy dropdown -->
+
+								<!-- Classifiers Dropdown -->
+								<dl for="classifiers-dropdown-btn" style="margin-bottom: 0;">Classifiers:
+									&nbsp;
+									<ul class="nav navbar-nav" style="margin-bottom: 0;">
+										<li id="classifiers-dropdown" class="dropdown">
+											<a id="classifiers-dropdown-btn" href="#" class="dropdown-toggle"
+												data-toggle="dropdown" role="button" aria-haspopup="true"
+												aria-expanded="false">Classifiers <span class="caret"></span></a>
+											<ul class="dropdown-menu">
+												<li><a id='lr' href="#"
+														onclick="updateDropdown('classifiers-dropdown-btn', 'Logistic Regression')">Logistic
+														Regression</a></li>
+												<li><a id='gnb' href="#"
+														onclick="updateDropdown('classifiers-dropdown-btn', 'Gaussian Naive Bayes')">Gaussian
+														Naive Bayes</a></li>
+												<li><a id='dt' href="#"
+														onclick="updateDropdown('classifiers-dropdown-btn', 'Decision Tree')">Decision
+														Tree</a></li>
+												<li><a id='knn' href="#"
+														onclick="updateDropdown('classifiers-dropdown-btn', 'KNN')">KNN</a>
+												</li>
+												<li><a id='ab' href="#"
+														onclick="updateDropdown('classifiers-dropdown-btn', 'Ada Boost')">Ada
+														Boost</a></li>
+												<li><a id='rf' href="#"
+														onclick="updateDropdown('classifiers-dropdown-btn', 'Random Forests')">Random
+														Forests</a></li>
+											</ul>
+										</li>
+									</ul>
+								</dl>
+								<!-- ends classifiers dropdown -->
+
+
+								<dl class="inline"
+									style="margin-top: 30px; display: flex; justify-content: space-between;">
+									<div class="inline">
+										Total budget:&nbsp;
+										<select name="total-budget" id="total-budget"></select>
+									</div>
+									<div class="inline">
+										Bag size:&nbsp;
+										<select name="bag-size" id="bag-size"></select>
+									</div>
+								</dl>
+								<div class="row" style="margin-top: 30px; text-align: center;">
+									<button id='run-button' class='btn btn-danger button-size' disabled>Run</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Right side -->
+			<div id='right' class="col-md-4">
+
+				<div id='TrajectoryFeatures-Classification-Form' class="panel2 panel-primary analytic-panel">
+
+					<div class="panel-header">
+						<span class="panel-title">Trajectory Features and Classification</span>
+						<span class="icon glyphicon glyphicon-info-sign"
+							title="This panel displays detailed information on UMAP distances, showcasing the results of UMAP dimensionality reduction applied to the trajectory features."></span>
+					</div>
+
+					<div id="barchart-features-form" style="padding: 5px;">
+						<div id="charts-container"></div>
+					</div>
+
+					<div id="UMAPPlot-features-form" class="panel panel-primary analytic-panel">
+						<div id="umap-plot-trajectory"></div>
+					</div>
+
+
+					<div class="panel panel-primary analytic-panel" style=" padding: 8px;">
+						<div class="panel-primary">
+							<div class="inline" style="display: flex; justify-content: space-between;">
+								<span class="label-title">Selected TID:</span>
+								<span id="TID_ToDisplay_labeled" class="label-value"></span> <!-- Placeholder Value -->
+								<span class="label-title">UMAP Distance:</span>
+								<span id="umap-distance-for-trajectory" class="label-value"></span>
+								<!-- Placeholder Value -->
+							</div>
+						</div>
+					</div>
+
+
+					<div class="panel panel-primary analytic-panel" style=" padding: 8px;">
+						<dl style="margin-top: 10px;">
+							<button id='next-trajectory' class='btn btn-danger button-size' disabled>Next</button>
+							Label:
+							<select name='label-select' id='label-selector'></select>
+							<button id='add-label-to-trajectory' class='btn btn-danger button-size'
+								disabled>Add</button>
+							<span class="glyphicon glyphicon-info-sign" rel="tooltip"
+								title="Use the buttons in this panel to find the Next trajectory to be annotated and to Add a label to the selected trajectory.">
+							</span>
+						</dl>
+					</div>
+				</div>
+			</div>
+			<!-- Right side ends-->
+
+		</div><!-- Ends middle navbar -->
+	</div>
+
+	<div id='results-content' class="hidden">
+		<div class="container-fluid">
+
+			<div class="content">
+				<div class="col-md-14">
+					<div class="header-box">
+						Results
+						<div class="right navbar-right">
+
+							<button id="print-button" class="btn btn-custom mt-3" onclick="printResults()"
+								title="Print Results">
+								<i class="fas fa-print"></i>
+							</button>
+
+							<button id="download-csv-button" class="btn btn-custom mt-3" onclick="downloadFile()"
+								title="Download CSV">
+								<i class="fas fa-file-csv"></i>
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Row 1 Header -->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header-box">
+						Data Distribution
+						<button id="collapse-toggle-row1" class="toggle-button"
+							onclick="toggleCollapse('row1-content', 'collapse-toggle-row1')">&#x2212;</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Row 1 Content -->
+			<div id="row1-content" class="collapse in">
+				<div class="row">
+
+					<div class="col-md-4">
+						<div id='labels-distribution' class="panel panel-primary analytic-panel">
+							<div class="panel-heading">Labels Distribution</div>
+							<div class='panel-body fixed-panel'>
+								<div id='labels-distribution-body'>
+									<div class="panel-body3 d-flex justify-content-center align-items-center"
+										style="height: 100%; width: 100%; display: flex;">
+										<div id='labels-distribution-chart'></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div id='point-features-distribution' class="panel panel-primary analytic-panel">
+							<div class="panel-heading">Point Features Distribution</div>
+							<div class='panel-body fixed-panel'>
+								<dl class="dl-no-margin">Point Feature:&nbsp;
+									<select id='result-point-feature-selector'></select>
+								</dl>
+								<div class="panel-body3 d-flex justify-content-center align-items-center"
+									style="height: 100%; width: 100%; display: flex;">
+									<div id='point-features-distribution-chart'></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div id='trajectory-features-distribution' class="panel panel-primary analytic-panel">
+							<div class="panel-heading">Trajectory Features Distribution</div>
+							<div class='panel-body fixed-panel'>
+								<dl class="dl-no-margin">Trajectory Feature:&nbsp;
+									<select name='feature-select' id='trajectory-feature-selector'></select>
+								</dl>
+								<div class="panel-body3 d-flex justify-content-center align-items-center"
+									style="height: 100%; width: 100%; display: flex;">
+									<div id='trajectory-features-distribution-chart'></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header-box">
+						Dimensionality Reduction
+						<button id="collapse-toggle-row2" class="toggle-button"
+							onclick="toggleCollapse('row2-content', 'collapse-toggle-row2')">&#x2212;</button>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Row 2 Content -->
+			<div id="row2-content" class="collapse in">
+				<div class="row">
+					<!-- PCA Panel -->
+					<div class="col-md-6">
+						<div id="pca" class="panel panel-primary analytic-panel">
+							<div class="panel-heading">PCA</div>
+							<div class="Chart-Results-Display d-flex justify-content-center align-items-center"
+								style="height: 100%; width: 100%; display: flex;">
+								<div id="pca-scatter-plot"></div>
+							</div>
+						</div>
+					</div>
+					<!-- t-SNE Panel -->
+					<div class="col-md-6">
+						<div id="tsne" class="panel panel-primary analytic-panel">
+							<div class="panel-heading">t-SNE</div>
+							<div class="Chart-Results-Display d-flex justify-content-center align-items-center"
+								style="height: 100%; width: 100%; display: flex;">
+								<div id="tsne-scatter-plot"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Row 3 Header -->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header-box">
+						Decision Surface
+						<button id="collapse-toggle-row3" class="toggle-button"
+							onclick="toggleCollapse('row3-content', 'collapse-toggle-row3')">&#x2212;</button>
+						<!-- Minus sign -->
+					</div>
+				</div>
+			</div>
+
+			<!-- Row 3 Content -->
+			<div id="row3-content" class="collapse in">
+				<div class="row">
+					<!-- Trained Model Panel -->
+					<div class="col-md-6">
+						<div id="box-plot" class="panel panel-primary analytic-panel">
+							<div class="panel-heading">Trained Model</div>
+							<div class="Chart-Results-Display d-flex justify-content-center align-items-center"
+								style="height: 100%; width: 100%; display: flex;">
+								<div id="box-plot-div"></div>
+							</div>
+						</div>
+					</div>
+					<!-- Decision Boundary Panel -->
+					<div class="col-md-6">
+						<div id="db" class="panel panel-primary analytic-panel">
+							<div class="panel-heading">PCA–Random Forest</div>
+							<div class="Chart-Results-Display d-flex justify-content-center align-items-center"
+								style="height: 100%; width: 100%; display: flex;">
+								<div id="decision-boundary-plot"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-primary analytic-panel">
+							<div class="panel-heading">Decision Boundary Maps</div>
+						</div>
+						<div class="Chart-Results-Display d-flex justify-content-center align-items-center"
+							style="height: 100%; width: 100%; display: flex;">
+							<div id="images"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+			<!-- Row 4 Header -->
+			<!--
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header-box">
+						Decision Boundaries
+						<button id="collapse-toggle-row4" class="toggle-button"
+							onclick="toggleCollapse('row4-content', 'collapse-toggle-row4')">&#x2212;</button>
+					</div>
+				</div>
+			</div>
+-->
+			<!-- Row 4 Content -->
+			<!--
+			
+			<div id="row4-content" class="collapse in">
+				
+			</div>
+-->
+		</div>
+	</div>
+
+</body>
+
+<script type="text/javascript" src="./analytic_js"></script>
+
+
+</html>

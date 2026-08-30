@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANALYTiC Platform Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons (required for icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+</head>
+
+<style>
+    .mb-4 {
+        color: blue;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        scroll-behavior: smooth;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        /*background-image: url('path/to/your-image.jpg');*/
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 3rem;
+        animation: fadeInDown 2s;
+    }
+
+    .hero-section .btn-custom {
+        background-color: #28a745;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        animation: fadeInUp 2s;
+        border: none;
+        color: whitesmoke;
+        font-size: x-large;
+    }
+
+    /* Animation */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Sections */
+    .section {
+        padding: 10px 5px;
+    }
+
+    .section-bg {
+        background: #f8f9fa;
+    }
+
+    /* Card Styles */
+    .card {
+        transition: all 0.3s ease-in-out;
+        height: 100%;
+        width: 1000px;
+        background: linear-gradient(135deg, #f5f5f5, #ffffff);
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .card-text {
+        font-size: large;
+        color: #555;
+        text-align: center;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        background: rgba(40, 167, 69, 0.1);
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        transition: all 0.3s;
+    }
+
+    .card:hover::before {
+        top: -60px;
+        right: -60px;
+        background: rgba(40, 167, 69, 0.2);
+        width: 120px;
+        height: 120px;
+    }
+
+    .row-cols-md-3 .col,
+    .row-cols-md-4 .col {
+        display: flex;
+        align-items: stretch;
+    }
+
+    /* Footer */
+    footer {
+        background: #343a40;
+        color: white;
+        padding: 40px 0;
+    }
+
+    footer a {
+        color: #28a745;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+    footer .social-icons a {
+        margin: 0 10px;
+        color: white;
+        font-size: 1.2rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .btn-custom {
+            font-size: 1rem;
+        }
+    }
+
+    .hero-section {
+        color: black;
+    }
+
+    .bottom-button-container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .container1 {
+        max-width: 60%;
+        margin: 20px auto;
+    }
+
+    .container2 {
+        max-width: 85%;
+        margin: 10px auto;
+    }
+
+    .btn-custom {
+        background-color: #28a745;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        border: none;
+        color: whitesmoke;
+        font-size: x-large;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        background-color: #218838;
+        color: whitesmoke;
+    }
+</style>
+
+<body>
+    <!-- Hero Section -->
+    <div id="hero-section">
+        <header class="hero-section">
+
+            <div class="row">
+                <div>
+                    <h1>ANALYTiC Platform</h1>
+                    <p class="lead">An Active Learning System for Trajectory Classification</p>
+                    <div class="container1 text-center">
+                        <h3>
+                            ANALYTiC is an interactive system designed to assist researchers and domain experts in the
+                            semantic annotation and classification of movement trajectory data. It leverages active
+                            learning techniques to select the most informative samples for labeling,
+                            thereby significantly reducing the manual effort typically required in the annotation
+                            process. </h3>
+                        <h3>
+                            The platform combines machine learning models with data visual tools, including
+                            interactive maps and feature-based charts, to guide users through a systematic,
+                            iteration-based labeling workflow. By focusing expert attention on only a subset of
+                            chosen trajectories, ANALYTiC enables the creation of high-quality labeled
+                            datasets while minimizing time. </h3>
+                    </div>
+
+                    <div class="button-group mt-3">
+                        <button class="btn btn-custom" style="margin: 30px;"
+                            onclick="document.getElementById('about').scrollIntoView();">Learn
+                            More</button>
+                        <button class="btn btn-custom" onclick="window.location.href='/index'">Start</button>
+                    </div>
+
+
+                </div>
+            </div>
+    </div>
+    </header>
+
+
+    <div id="about">
+        <!-- Features Section -->
+        <div class="container2">
+            <section class="mb-5">
+                <h2 class="text-center mb-4 section-title">Key Features</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Active Learning Optimization</h5>
+                                <p class="card-text">
+                                    Implements advanced active learning strategies—Uncertainty Sampling (UNC),
+                                    Query-by-Committee (QBC), and Random Sampling (RND)—to identify and prioritize the
+                                    most informative trajectories for labeling, improving classifier performance while
+                                    minimizing annotation workload.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Flexible Trajectory Handling</h5>
+                                <p class="card-text">
+                                    Supports ingestion and processing of diverse spatiotemporal data sources including
+                                    animal, vessel, and human movement datasets. Includes feature extraction from
+                                    point-level and trajectory-level characteristics to enable robust classification.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Interactive Visual Interface</h5>
+                                <p class="card-text">
+                                    Offers a browser-based interface with integrated map and chart views, enabling
+                                    expert users to visually examine and semantically label trajectories with real-time
+                                    feedback from feature plots and contextual geospatial markers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="text-center mb-4 section-title">Workflow</h2>
+                <div class="row row-cols-1 row-cols-md-4 g-4">
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Data Selection</h5>
+                                <p class="card-text">
+                                    Users initiate the process by selecting a trajectory dataset of interest. Datasets
+                                    may represent wildlife tracking, maritime vessel activity, or human mobility data.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Initial Model Training</h5>
+                                <p class="card-text">
+                                    The system trains an initial model using a small seed set (e.g., 20 labeled
+                                    samples), ensuring sufficient class representation to bootstrap the active learning
+                                    cycle.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Iterative Annotation</h5>
+                                <p class="card-text">
+                                    Based on the chosen strategy (UNC, QBC, or RND), the system presents a batch of
+                                    informative trajectories to the user for semantic labeling, followed by model
+                                    retraining after each batch.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Trained Model Deployment</h5>
+                                <p class="card-text">
+                                    Once the labeling budget is reached, the final model can be used to classify the
+                                    remaining unlabeled trajectories, facilitating large-scale automated semantic
+                                    enrichment.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="text-center mb-4" style="color: blue;">Applications</h2>
+                <div class="row row-cols-1 row-cols-md-3 justify-content-center g-4">
+                    <div class="col">
+                        <div class="card h-100 text-center shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title">Transport and Mobility Analysis</h5>
+                                <p class="card-text">
+                                    Enables mode-of-transport detection and trajectory classification in urban mobility
+                                    datasets, including public transit, vehicular trips, and pedestrian activity.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title">Behavioral and Ecological Research</h5>
+                                <p class="card-text">
+                                    Facilitates semantic labeling of wildlife trajectories to support studies of
+                                    migration, foraging, and behavioral patterns across species and environments.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 text-center shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title">Maritime and Security Surveillance</h5>
+                                <p class="card-text">
+                                    Detects vessel behaviors such as fishing activity and route anomalies, supporting
+                                    monitoring, regulation enforcement, and maritime safety applications.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="text-center mb-4">Advantages</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Efficiency</h5>
+                                <p class="card-text">
+                                    Achieves near-fully supervised model performance using significantly fewer labeled
+                                    examples through intelligent sample selection and retraining cycles.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Cost-Effective</h5>
+                                <p class="card-text">
+                                    Reduces annotation costs by focusing expert labeling effort only on the most
+                                    informative samples, maximizing return on each annotation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Adaptability</h5>
+                                <p class="card-text">
+                                    Suitable for various domains and classification tasks, and can accommodate different
+                                    trajectory formats, features, and semantic labeling goals.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--
+            <section class="mb-5">
+                <h2 class="text-center mb-4">Challenges</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Initial Setup</h5>
+                                <p class="card-text">
+                                    Requires an initial labeled dataset (seed set) to initialize the classifier and
+                                    start the active learning process.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">User Involvement</h5>
+                                <p class="card-text">
+                                    Relies on accurate and consistent expert labeling; the quality of the model is
+                                    directly affected by annotation correctness.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Computational Resources</h5>
+                                <p class="card-text">
+                                    Iterative retraining and complex query strategies (e.g., QBC with model committees)
+                                    may require significant processing power, especially with large datasets.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        -->
+
+            <!-- Target Users Section -->
+            <!--
+            <section class="mb-5">
+                <h2 class="text-center mb-4 section-title">Who Can Use ANALYTiC?</h2>
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Data Scientists & Machine Learning Researchers</h5>
+                                <p class="card-text">
+                                    Ideal for those developing or evaluating spatiotemporal classification models.
+                                    ANALYTiC offers a practical environment for testing active learning strategies and
+                                    classifier performance on real-world trajectory datasets.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Ecologists & Behavioral Scientists</h5>
+                                <p class="card-text">
+                                    Supports the semantic labeling of animal movement data, enabling behavioral pattern
+                                    analysis such as foraging, migration, or territorial movement across species and
+                                    habitats.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Transportation & Urban Planners</h5>
+                                <p class="card-text">
+                                    Assists in identifying and classifying human mobility patterns, transport mode
+                                    detection, and analyzing urban flow using trajectory-based insights from GPS and
+                                    sensor data.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Maritime & Security Analysts</h5>
+                                <p class="card-text">
+                                    Enables efficient classification of vessel behavior such as fishing vs. non-fishing,
+                                    route deviations, or suspicious movements, supporting maritime surveillance and
+                                    anomaly detection tasks.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        -->
+        </div>
+
+        <div class="button-group  bottom-button-container justify-content-center mt-3">
+            <button class="btn btn-custom" style="margin: 30px;"
+                onclick="document.getElementById('hero-section').scrollIntoView();">Main Section</button>
+            <button class="btn btn-custom" onclick="window.location.href='/index'">Start</button>
+        </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container text-center">
+                <p>&copy; 2024 ANALYTiC Platform. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap Icons (optional for social icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</body>
+
+</html>

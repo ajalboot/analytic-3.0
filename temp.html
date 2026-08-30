@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANALYTiC Platform Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <header class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="display-4">ANALYTiC Platform</h1>
+            <p class="lead">Interactive Active Learning for Semantic Trajectory Classification</p>
+            <p>
+                ANALYTiC is a web-based interactive tool designed to support users in the semantic annotation of trajectory data 
+                using machine learning strategies. It employs Uncertainty Sampling (UNC) and Query-by-Committee (QBC) to reduce 
+                manual labeling workload while maintaining classification performance.
+            </p>
+            <button class="btn btn-success m-2" onclick="document.getElementById('about').scrollIntoView();">Learn More</button>
+            <button class="btn btn-success m-2" onclick="window.location.href='/index'">Go to Platform</button>
+        </div>
+    </header>
+
+    <section id="about" class="container py-5">
+        <h2 class="text-center mb-4">About ANALYTiC</h2>
+        <p>
+            ANALYTiC addresses the challenge of labeling large-scale trajectory datasets generated from devices such as GPS trackers 
+            and sensors. Manual labeling is time-consuming and resource-intensive. ANALYTiC reduces this burden by selecting only 
+            the most informative trajectories for annotation.
+        </p>
+        <p>
+            The system integrates visual support (map visualizations, feature charts) to guide users through the active learning process, 
+            providing an effective interface to improve annotation efficiency. It supports common active learning strategies and a variety 
+            of classifiers within a flexible, modular architecture.
+        </p>
+    </section>
+
+    <section class="container py-5">
+        <h2 class="text-center mb-4">Key Features</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Active Learning Integration</h5>
+                        <p class="card-text">Uses UNC and QBC to prioritize labeling tasks that yield the highest model improvement.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Visual Annotation Interface</h5>
+                        <p class="card-text">Interactive map and charts for inspecting trajectory and point features during annotation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Flexible System Design</h5>
+                        <p class="card-text">Implemented with HTML5, JavaScript, Python, and Solr; easily extendable for research.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5">
+        <h2 class="text-center mb-4">Use Case Datasets</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Animal Tracking</h5>
+                        <p class="card-text">Dataset includes elk, deer, and cattle movement patterns to study behavioral differences.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Maritime Activity</h5>
+                        <p class="card-text">Trajectories from vessels labeled as fishing or non-fishing to monitor maritime operations.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Urban Mobility</h5>
+                        <p class="card-text">Human movement trajectories labeled by transport mode: walking, vehicle, and rail-based.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container text-center py-5">
+        <h2>Try the Platform</h2>
+        <p>Begin annotating intelligently selected trajectories to train accurate semantic classifiers.</p>
+        <button class="btn btn-success" onclick="window.location.href='/index'">Go to Platform</button>
+    </section>
+
+    <footer class="text-white bg-dark py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 ANALYTiC Platform. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#" class="text-white mx-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-github"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
