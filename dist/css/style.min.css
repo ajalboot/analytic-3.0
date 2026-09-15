@@ -1,0 +1,537 @@
+.leaflet-control-loading:empty {
+    background-image: url(data:image/gif;base64,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);
+    background-repeat: no-repeat;
+}
+
+.leaflet-control-loading,
+.leaflet-control-zoom a.leaflet-control-loading,
+.leaflet-control-zoomslider a.leaflet-control-loading {
+    display: none;
+}
+
+.leaflet-control-loading.is-loading,
+.leaflet-control-zoom a.leaflet-control-loading.is-loading,
+.leaflet-control-zoomslider a.leaflet-control-loading.is-loading {
+    display: block;
+}
+
+.leaflet-bar-part-bottom {
+    border-bottom: none;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.leaflet-control-messagebox {
+    display: none;
+    padding: 10px;
+    border-radius: 2px;
+    color: #fff;
+    opacity: 1;
+    transition: opacity 0.6s;
+    text-align: left;
+    width: 100%;
+}
+
+.leaflet-control-messagebox.error {
+    background-color: #f44336;
+    border: 1px solid #8b0000;
+}
+
+.leaflet-control-messagebox.success {
+    background-color: #4caf50;
+    border: 1px solid #006400;
+}
+
+.leaflet-control-messagebox.info {
+    background-color: #2196f3;
+    border: 1px solid #00008b;
+}
+
+.leaflet-control-messagebox.warning {
+    background-color: #ff9800;
+    border: 1px solid #ff8c00;
+}
+
+.loading-show {
+    display: block !important;
+    position: fixed !important;
+    z-index: 100;
+    background-image: url('./images/loadinggif.gif');
+    background-color: #fff;
+    opacity: 0.8;
+    background-repeat: no-repeat;
+    background-position: center;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+}
+
+#loadinggif.show {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    z-index: 101;
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+    margin-top: -16px;
+}
+
+#map {
+    border: 1px solid #000;
+    border-radius: 4px;
+    margin-top: 5px;
+    position: relative;
+    height: 100%;
+    z-index: 1;
+}
+
+.map-from {
+    height: 600px;
+}
+
+#loading {
+    position: relative;
+}
+
+/* modal starts */
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 999; 
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5); 
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  width: 400px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-buttons {
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  margin: 0 10px;
+  padding: 6px 14px;
+}
+/* modal ends */
+.navbar {
+    margin-bottom: 0;
+}
+
+#label-selector,
+#label-txt {
+    flex-grow: 1;
+}
+
+.panel {
+    margin-bottom: 20px !important;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+#TrajectoryFeatures-Classification-Form{
+    margin-top: 0;
+    height: 1120px;
+}
+
+#barchart-features-form {
+    height: 760px;
+}
+
+#UMAPPlot-features-form {
+    height: 300px;
+}
+
+.Trajectory_Features_Form {
+    height: 100px;
+}
+
+.analytic-panel {
+    margin: 4px !important;
+}
+
+#middle-left-nav .row:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.panel-body2 {
+    padding-top: 5px;
+    padding-left: 5px;
+    height: 220px;
+}
+
+.panel-body3 {
+    align-items: center;
+    padding-top: 10px;
+    height: 260px;
+}
+
+.panel-body2 dl.dl-no-margin {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-primary {
+    border-color: #2c5ab7 !important;
+}
+
+.panel-heading {
+    font-size: 16px !important;
+    background-color: #2c5ab7 !important;
+    border-color: #2c5ab7 !important;
+}
+
+.button-size {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#middle-nav {
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+#right {
+    padding-left: 5px;
+}
+
+.dl-no-margin {
+    margin-bottom: 0 !important;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+}
+
+dl {
+    color: #000;
+    text-align: left;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+dl.inline dd {
+    display: inline;
+    margin: 5px;
+}
+
+dl.inline dt {
+    display: inline-block;
+}
+
+#loading,
+#point-feature-selector {
+    display: none;
+}
+
+/* New added */
+
+
+.inline {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.dl-no-margin {
+    margin: 0;
+}
+
+.label-title {
+    font-weight: bold;
+    margin-right: 3px;
+    color: #333;
+    font-size: large;
+}
+
+.label-value {
+    font-weight: bold;
+    color: #007bff;
+    margin-left: 10px;
+    font-size: large;
+}
+
+.Chart-Results-Display {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style the tab */
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+
+
+#snackbar {
+    background-color: #05ab5e;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    border-radius: 4px;
+    display: none;
+    width: 100%;
+    font-size: x-large;
+}
+
+to {
+    opacity: 1;
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.btn-custom {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    margin-top: 20px;
+    margin-right: 30px;
+}
+
+.btn-custom:hover {
+    background-color: #218838;
+    color: #fff;
+}
+
+#labels-distribution-chart {
+    width: 100%;
+    height: 100%;
+}
+
+/* Custom styling for header */
+.header-box {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* Styling for collapse/expand button */
+.toggle-button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+/* ------------ Home Page CSS -------------------------*/
+
+.mb-4 {
+    color: blue;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    scroll-behavior: smooth;
+}
+
+/* Hero Section */
+.hero-section {
+    /*background-image: url('path/to/your-image.jpg');*/
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+/* Animation */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* Sections */
+.section {
+    padding: 10px 5px;
+}
+
+/* Card Styles */
+.card {
+    transition: all 0.3s ease-in-out;
+    height: 100%;
+    width: 1000px;
+    background: linear-gradient(135deg, #f5f5f5, #ffffff);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Footer */
+footer {
+    background: #343a40;
+    color: white;
+    padding: 40px 0;
+}
+
+footer a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+footer .social-icons a {
+    margin: 0 10px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.btn-custom {
+    font-size: 1rem;
+}
+
+
+.hero-section {
+    color: black;
+}
+
+/* Summary */
+
+.panel2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    background-color: #f9f9f9;
+    height: 300px;
+}
+
+.panel3 {
+    flex: 1;
+    align-items: center;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    background-color: #f9f9f9;
+    height: 200px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #007bff;
+}
+
+.panel-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.icon {
+    font-size: 16px;
+    margin-left: 8px;
+    cursor: pointer;
+    color: #0b8df8;
+}
+
+.panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 12px;
+}
+
+.label-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.label-value {
+    font-weight: bold;
+    color: #007bff;
+}
